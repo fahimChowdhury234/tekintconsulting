@@ -46,6 +46,7 @@ a {
     font-weight: 700;
     color: var(--brand-color);
     text-align: center;
+    text-transform: capitalize;
 }
 
 .main-header {
@@ -258,7 +259,7 @@ a {
 .count-down-box h2 {
     font-size: 44px;
     font-weight: bold;
-    color: var(--brand-color);
+    color: #ddd;
     margin-bottom: 10px;
 
 
@@ -267,7 +268,7 @@ a {
 .count-down-box .inc {
     font-size: 44px;
     font-weight: bold;
-    color: var(--brand-color);
+    color: #ddd;
     margin-bottom: 10px;
     text-align: center;
 
@@ -410,6 +411,10 @@ footer {
 
     .section-title {
         margin-top: 0;
+    }
+
+    .section-title h2 {
+        font-size: 34px;
     }
 
     .services-box {
