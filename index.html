@@ -49,7 +49,7 @@
                                     <a class="nav-link" href="#about" target="_self" title="">About us</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#services" target="_self" title="">Services</a>
+                                    <a class="nav-link" href="#service" target="_self" title="">Services</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#contact" target="_self" title="">Contact us</a>
@@ -114,7 +114,7 @@
 
             </div>
         </section>
-        <section class="services-section" id="services">
+        <section class="services-section" id="service">
             <div class="container">
                 <div class="section-title">
                     <h2>services</h2>
@@ -349,102 +349,106 @@
                 }
             });
         });
-        let submitButton = document.getElementById("submitButton")
-        submitButton.addEventListener("click", function (event) {
-            event.preventDefault(); // Prevent the form from submitting
+        document.addEventListener("DOMContentLoaded", function () {
 
-            // Reset error messages
-            document.querySelectorAll('.error-message').forEach(function (errorMessage) {
-                errorMessage.style.display = 'none';
+            let submitButton = document.getElementById("submitButton")
+            submitButton.addEventListener("click", function (event) {
+                event.preventDefault(); // Prevent the form from submitting
+
+                // Reset error messages
+                document.querySelectorAll('.error-message').forEach(function (errorMessage) {
+                    errorMessage.style.display = 'none';
+                });
+
+                // Get form values
+                let name = document.getElementById("name").value;
+                let email = document.getElementById("email").value;
+                let phone = document.getElementById("phone").value;
+                var services = document.getElementById("services").value;
+                let message = document.getElementById("message").value;
+                let isSuccess = document.getElementById('isSuccess')
+                console.log(services);
+                // Validate form fields
+                let isValid = true;
+
+                if (!name) {
+                    document.getElementById("nameError").style.display = 'block';
+                    isValid = false;
+                }
+
+                if (!email || !validateEmail(email)) {
+                    document.getElementById("emailError").style.display = 'block';
+                    isValid = false;
+                }
+
+                if (!phone) {
+                    document.getElementById("phoneError").style.display = 'block';
+                    isValid = false;
+                }
+
+                if (!services) {
+                    document.getElementById("servicesError").style.display = 'block';
+                    isValid = false;
+                }
+
+                if (!message) {
+                    document.getElementById("messageError").style.display = 'block';
+                    isValid = false;
+                }
+
+                // If form is valid, proceed to submit
+                if (isValid) {
+                    submitButton.textContent = "sending...";
+                    submitButton.disabled = true;
+                    // Perform AJAX request or other actions here
+                    var formData = new FormData();
+                    formData.append("name", name);
+                    formData.append("email", email);
+                    formData.append("phone", phone);
+                    formData.append("services", services);
+                    formData.append("message", message);
+
+                    fetch('contact.php', {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                return response.text();
+                            } else {
+                                throw new Error('Unexpected response status: ' + response.status);
+                            }
+                        }).then(data => {
+                            isSuccess.style.display = 'block';
+
+                            // Hide the success message after 5 seconds
+                            setTimeout(function () {
+                                isSuccess.style.display = 'none';
+                            }, 5000); // 5000 milliseconds = 5 seconds
+                            // Reset form and button state
+                            submitButton.textContent = "Send";
+                            submitButton.disabled = false;
+                            document.getElementById("contactForm").reset();
+                            console.log(data); // Response from PHP file
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            isSuccess.style.display = 'block';
+                            isSuccess.style.color = 'red'
+                            isSuccess.textContent = 'Error occurred during form submission'
+
+                            // Hide the success message after 5 seconds
+                            setTimeout(function () {
+                                isSuccess.style.display = 'none';
+                            }, 5000); // 5000 milliseconds = 5 seconds
+
+                        });
+
+
+                    // Reset form after submission
+                }
             });
-
-            // Get form values
-            let name = document.getElementById("name").value;
-            let email = document.getElementById("email").value;
-            let phone = document.getElementById("phone").value;
-            let services = document.getElementById("services").value;
-            let message = document.getElementById("message").value;
-            let isSuccess = document.getElementById('isSuccess')
-            // Validate form fields
-            let isValid = true;
-
-            if (!name) {
-                document.getElementById("nameError").style.display = 'block';
-                isValid = false;
-            }
-
-            if (!email || !validateEmail(email)) {
-                document.getElementById("emailError").style.display = 'block';
-                isValid = false;
-            }
-
-            if (!phone) {
-                document.getElementById("phoneError").style.display = 'block';
-                isValid = false;
-            }
-
-            if (!services) {
-                document.getElementById("servicesError").style.display = 'block';
-                isValid = false;
-            }
-
-            if (!message) {
-                document.getElementById("messageError").style.display = 'block';
-                isValid = false;
-            }
-
-            // If form is valid, proceed to submit
-            if (isValid) {
-                submitButton.textContent = "sending...";
-                submitButton.disabled = true;
-                // Perform AJAX request or other actions here
-                var formData = new FormData();
-                formData.append("name", name);
-                formData.append("email", email);
-                formData.append("phone", phone);
-                formData.append("services", services);
-                formData.append("message", message);
-
-                fetch('contact.php', {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            return response.text();
-                        } else {
-                            throw new Error('Unexpected response status: ' + response.status);
-                        }
-                    }).then(data => {
-                        isSuccess.style.display = 'block';
-
-                        // Hide the success message after 5 seconds
-                        setTimeout(function () {
-                            isSuccess.style.display = 'none';
-                        }, 5000); // 5000 milliseconds = 5 seconds
-                        // Reset form and button state
-                        submitButton.textContent = "Send";
-                        submitButton.disabled = false;
-                        document.getElementById("contactForm").reset();
-                        console.log(data); // Response from PHP file
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        isSuccess.style.display = 'block';
-                        isSuccess.style.color = 'red'
-                        isSuccess.textContent = 'Error occurred during form submission'
-
-                        // Hide the success message after 5 seconds
-                        setTimeout(function () {
-                            isSuccess.style.display = 'none';
-                        }, 5000); // 5000 milliseconds = 5 seconds
-
-                    });
-
-
-                // Reset form after submission
-            }
-        });
+        })
 
         // Email validation function
         function validateEmail(email) {
