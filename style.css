@@ -114,7 +114,7 @@ a {
     margin-bottom: 33px;
 }
 
-.hero-content-box button {
+.hero-content-box a {
     padding: 7px 35px;
     font-weight: 500;
     background-color: var(--brand-color);
@@ -125,7 +125,7 @@ a {
     transition: all .3s ease;
 }
 
-.hero-content-box button:hover {
+.hero-content-box a:hover {
     background-color: transparent;
     color: var(--brand-color);
     border: 1px solid var(--brand-color);
@@ -296,12 +296,14 @@ a {
     padding: 50px 0;
 }
 
-.contact-section .row {
-    padding-top: 30px;
-}
+
 
 .form {
-    padding: 40px;
+    padding: 30px;
+    width: 80%;
+    margin: 0 auto;
+    box-shadow: 0 0 1rem 0 rgba(156, 167, 180, 0.20);
+    filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.15));
 }
 
 .form .form-input {
